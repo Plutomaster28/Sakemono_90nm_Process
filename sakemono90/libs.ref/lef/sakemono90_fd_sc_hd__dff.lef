@@ -1,0 +1,283 @@
+VERSION 5.7 ;
+NOWIREEXTENSIONATTERMINAL OFF ;
+DIVIDERCHAR "/" ;
+BUSBITCHARS "[]" ;
+
+UNITS
+  DATABASE MICRONS 1000 ;
+END UNITS
+
+LAYER pwell
+  TYPE NWELL ;
+END pwell
+
+LAYER nwell  
+  TYPE NWELL ;
+END nwell
+
+LAYER poly
+  TYPE MASTERSLICE ;
+END poly
+
+LAYER li1
+  TYPE ROUTING ;
+  DIRECTION HORIZONTAL ;
+  PITCH 0.46 ;
+  WIDTH 0.17 ;
+  SPACING 0.14 ;
+  RESISTANCE RPERSQ 12.8 ;
+  CAPACITANCE CPERSQDIST 164.0 ;
+  EDGECAPACITANCE 57.0 ;
+END li1
+
+LAYER mcon
+  TYPE CUT ;
+  SPACING 0.19 ;
+END mcon
+
+LAYER met1
+  TYPE ROUTING ;
+  DIRECTION VERTICAL ;
+  PITCH 0.34 ;
+  WIDTH 0.14 ;
+  SPACING 0.14 ;
+  RESISTANCE RPERSQ 0.125 ;
+  CAPACITANCE CPERSQDIST 52.4 ;
+  EDGECAPACITANCE 28.7 ;
+  
+  MANUFACTURINGGRID 0.005 ;
+  
+  ANTENNADIFFAREA 400.0 ;
+  ANTENNACUMROUTINGPLUSCUT ;
+  ANTENNAGATEPLUSDIFF 350.0 ;
+  ANTENNAAREAFACTOR 400.0 ;
+END met1
+
+LAYER via
+  TYPE CUT ;
+  SPACING 0.17 ;
+  ENCLOSURE BELOW 0.055 0.085 ;
+  ENCLOSURE ABOVE 0.055 0.085 ;
+END via
+
+LAYER met2
+  TYPE ROUTING ;
+  DIRECTION HORIZONTAL ;
+  PITCH 0.46 ;
+  WIDTH 0.14 ;
+  SPACING 0.14 ;
+  RESISTANCE RPERSQ 0.125 ;
+  CAPACITANCE CPERSQDIST 52.4 ;
+  EDGECAPACITANCE 28.7 ;
+  
+  MANUFACTURINGGRID 0.005 ;
+  
+  ANTENNADIFFAREA 400.0 ;
+  ANTENNACUMROUTINGPLUSCUT ;
+  ANTENNAGATEPLUSDIFF 350.0 ;
+  ANTENNAAREAFACTOR 400.0 ;
+END met2
+
+SITE unithd
+  SYMMETRY Y ;
+  CLASS CORE ;
+  SIZE 0.46 BY 2.72 ;
+END unithd
+
+MACRO sakemono90_fd_sc_hd__dfxtp_1
+  CLASS CORE ;
+  FOREIGN sakemono90_fd_sc_hd__dfxtp_1 0.0 0.0 ;
+  ORIGIN 0.0 0.0 ;
+  SIZE 5.52 BY 2.72 ;
+  SYMMETRY X Y ;
+  SITE unithd ;
+  
+  PIN D
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 0.105 1.075 0.405 1.405 ;
+    END
+  END D
+  
+  PIN CLK
+    DIRECTION INPUT ;
+    USE CLOCK ;
+    PORT
+      LAYER li1 ;
+        RECT 2.655 1.075 2.955 1.405 ;
+    END
+  END CLK
+
+  PIN Q
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 5.195 1.575 5.495 1.905 ;
+    END
+  END Q
+
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 2.480 5.520 2.720 ;
+    END
+  END VPWR
+
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 0.000 5.520 0.240 ;
+    END
+  END VGND
+
+  OBS
+    LAYER li1 ;
+      RECT 0.00 0.24 5.52 1.07 ;
+      RECT 0.00 1.41 2.65 2.48 ;
+      RECT 2.96 1.41 5.19 2.48 ;
+  END
+
+END sakemono90_fd_sc_hd__dfxtp_1
+
+MACRO sakemono90_fd_sc_hd__dfxtn_1
+  CLASS CORE ;
+  FOREIGN sakemono90_fd_sc_hd__dfxtn_1 0.0 0.0 ;
+  ORIGIN 0.0 0.0 ;
+  SIZE 5.52 BY 2.72 ;
+  SYMMETRY X Y ;
+  SITE unithd ;
+  
+  PIN D
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 0.105 1.075 0.405 1.405 ;
+    END
+  END D
+  
+  PIN CLK_N
+    DIRECTION INPUT ;
+    USE CLOCK ;
+    PORT
+      LAYER li1 ;
+        RECT 2.655 1.075 2.955 1.405 ;
+    END
+  END CLK_N
+
+  PIN Q
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 5.195 1.575 5.495 1.905 ;
+    END
+  END Q
+
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 2.480 5.520 2.720 ;
+    END
+  END VPWR
+
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 0.000 5.520 0.240 ;
+    END
+  END VGND
+
+  OBS
+    LAYER li1 ;
+      RECT 0.00 0.24 5.52 1.07 ;
+      RECT 0.00 1.41 2.65 2.48 ;
+      RECT 2.96 1.41 5.19 2.48 ;
+  END
+
+END sakemono90_fd_sc_hd__dfxtn_1
+
+MACRO sakemono90_fd_sc_hd__dfxbp_1
+  CLASS CORE ;
+  FOREIGN sakemono90_fd_sc_hd__dfxbp_1 0.0 0.0 ;
+  ORIGIN 0.0 0.0 ;
+  SIZE 7.36 BY 2.72 ;
+  SYMMETRY X Y ;
+  SITE unithd ;
+  
+  PIN D
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 0.105 1.075 0.405 1.405 ;
+    END
+  END D
+  
+  PIN CLK
+    DIRECTION INPUT ;
+    USE CLOCK ;
+    PORT
+      LAYER li1 ;
+        RECT 3.575 1.075 3.875 1.405 ;
+    END
+  END CLK
+
+  PIN Q
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 6.115 1.575 6.415 1.905 ;
+    END
+  END Q
+
+  PIN Q_N
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER li1 ;
+        RECT 7.035 1.575 7.335 1.905 ;
+    END
+  END Q_N
+
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 2.480 7.360 2.720 ;
+    END
+  END VPWR
+
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER met1 ;
+        RECT 0.000 0.000 7.360 0.240 ;
+    END
+  END VGND
+
+  OBS
+    LAYER li1 ;
+      RECT 0.00 0.24 7.36 1.07 ;
+      RECT 0.00 1.41 3.57 2.48 ;
+      RECT 3.88 1.41 6.11 2.48 ;
+      RECT 6.42 1.41 7.03 2.48 ;
+  END
+
+END sakemono90_fd_sc_hd__dfxbp_1
+
+END LIBRARY

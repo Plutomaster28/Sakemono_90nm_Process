@@ -1,0 +1,211 @@
+/* Sakemono 90nm Standard Cell Library - Slow Corner
+ * Liberty timing file for inverter cells
+ * Process: SS (Slow-Slow), Temperature: 125C, Voltage: 1.62V
+ * Generated for OpenLane flow compatibility
+ */
+
+library(sakemono90_fd_sc_hd__ss_100C_1v62) {
+
+  technology(cmos);
+  delay_model : table_lookup;
+  revision : 1.0;
+  date : "2025-09-17";
+  comment : "Sakemono 90nm High Density Standard Cell Library - Slow Corner";
+
+  time_unit : "1ps";
+  voltage_unit : "1V";
+  current_unit : "1mA";
+  pulling_resistance_unit : "1kohm";
+  capacitive_load_unit(1.0, pf);
+  leakage_power_unit : "1nW";
+
+  /* Slow corner operating conditions */
+  nom_process : 1.0;
+  nom_temperature : 125.0;
+  nom_voltage : 1.62;
+
+  slew_lower_threshold_pct_fall : 20.0;
+  slew_upper_threshold_pct_fall : 80.0;
+  slew_lower_threshold_pct_rise : 20.0;
+  slew_upper_threshold_pct_rise : 80.0;
+  input_threshold_pct_fall : 50.0;
+  input_threshold_pct_rise : 50.0;
+  output_threshold_pct_fall : 50.0;
+  output_threshold_pct_rise : 50.0;
+
+  default_inout_pin_cap : 0.0;
+  default_input_pin_cap : 0.0;
+  default_output_pin_cap : 0.0;
+  default_max_transition : 1000.0;
+  default_fanout_load : 1.0;
+  default_max_fanout : 5.0;
+  default_cell_leakage_power : 0.0;
+
+  wire_load("SMALL") {
+    resistance : 0.140;  /* Higher resistance at hot temp */
+    capacitance : 0.038; /* Higher capacitance */
+    area : 0.0;
+    slope : 1.0;
+    fanout_length(1, 2.5);
+    fanout_length(2, 5.0);
+    fanout_length(3, 7.5);
+    fanout_length(4, 10.0);
+    fanout_length(5, 12.5);
+  }
+
+  default_wire_load : "SMALL";
+  default_wire_load_mode : "top";
+  default_wire_load_selection : "SMALL";
+
+  lu_table_template(delay_template_7x7) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+    index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+  }
+
+  lu_table_template(power_template_7x7) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+    index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+  }
+
+  lu_table_template(constraint_template_7x1) {
+    variable_1 : related_pin_transition;
+    index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+  }
+
+  /* Slow corner inverter - ~55% slower than typical */
+  cell(sakemono90_fd_sc_hd__inv_1) {
+    area : 0.9248;
+    cell_leakage_power : 12.25;  /* 5x higher leakage at hot temp */
+    
+    cell_footprint : "inv";
+    
+    pg_pin(VPWR) {
+      voltage_name : VPWR;
+      pg_type : primary_power;
+    }
+    
+    pg_pin(VGND) {
+      voltage_name : VGND;
+      pg_type : primary_ground;
+    }
+
+    pin(A) {
+      direction : input;
+      capacitance : 0.0187;  /* Slightly higher at slow corner */
+      rise_capacitance : 0.0187;
+      fall_capacitance : 0.0187;
+      max_transition : 1000.0;
+    }
+
+    pin(Y) {
+      direction : output;
+      function : "!A";
+      max_capacitance : 0.5;
+      max_transition : 1000.0;
+
+      timing() {
+        related_pin : "A";
+        timing_sense : negative_unate;
+        timing_type : combinational;
+
+        /* Slow corner - ~55% slower delays */
+        cell_fall(delay_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "19.4, 23.6, 29.0, 40.4, 63.4, 109.3, 201.0", \
+            "23.4, 27.6, 33.0, 44.4, 67.4, 113.3, 205.0", \
+            "29.9, 34.1, 39.5, 50.9, 73.9, 119.8, 211.5", \
+            "43.5, 47.7, 53.1, 64.5, 87.5, 133.4, 225.1", \
+            "71.1, 75.3, 80.7, 92.1, 115.1, 161.0, 252.7", \
+            "126.6, 130.8, 136.2, 147.6, 170.6, 216.5, 308.2", \
+            "238.1, 242.3, 247.7, 259.1, 282.1, 328.0, 419.7" \
+          );
+        }
+
+        cell_rise(delay_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "29.0, 34.6, 42.0, 56.9, 86.8, 146.5, 265.9", \
+            "33.3, 38.9, 46.3, 61.2, 91.1, 150.8, 270.2", \
+            "40.6, 46.2, 53.6, 68.5, 98.4, 158.1, 277.5", \
+            "55.9, 61.5, 68.9, 83.8, 113.7, 173.4, 292.8", \
+            "87.1, 92.7, 100.1, 115.0, 144.9, 204.6, 324.0", \
+            "149.7, 155.3, 162.7, 177.6, 207.5, 267.2, 386.6", \
+            "275.2, 280.8, 288.2, 303.1, 333.0, 392.7, 512.1" \
+          );
+        }
+
+        /* Slower transitions */
+        fall_transition(delay_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "24.5, 31.2, 42.2, 64.2, 108.2, 196.2, 372.3", \
+            "28.8, 35.5, 46.5, 68.5, 112.5, 200.5, 376.6", \
+            "37.5, 44.2, 55.2, 77.2, 121.2, 209.2, 385.3", \
+            "55.5, 62.2, 73.2, 95.2, 139.2, 227.2, 403.3", \
+            "91.8, 98.5, 109.5, 131.5, 175.5, 263.5, 439.6", \
+            "164.6, 171.3, 182.3, 204.3, 248.3, 336.3, 512.4", \
+            "310.6, 317.3, 328.3, 350.3, 394.3, 482.3, 658.4" \
+          );
+        }
+
+        rise_transition(delay_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "34.7, 44.5, 59.2, 88.6, 147.5, 265.3, 501.0", \
+            "40.0, 49.8, 64.5, 93.9, 152.8, 270.6, 506.3", \
+            "50.5, 60.3, 75.0, 104.4, 163.3, 281.1, 516.8", \
+            "71.9, 81.7, 96.4, 125.8, 184.7, 302.5, 538.2", \
+            "114.9, 124.7, 139.4, 168.8, 227.7, 345.5, 581.2", \
+            "201.5, 211.3, 226.0, 255.4, 314.3, 432.1, 667.8", \
+            "374.8, 384.6, 399.3, 428.7, 487.6, 605.4, 841.1" \
+          );
+        }
+      }
+
+      /* Higher power at slow corner due to hot temp and longer transitions */
+      internal_power() {
+        related_pin : "A";
+        
+        fall_power(power_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "2.04, 2.33, 2.79, 3.72, 5.57, 9.28, 16.70", \
+            "2.01, 2.31, 2.77, 3.70, 5.55, 9.26, 16.68", \
+            "1.97, 2.27, 2.73, 3.66, 5.51, 9.22, 16.64", \
+            "1.88, 2.18, 2.64, 3.57, 5.42, 9.13, 16.55", \
+            "1.71, 2.00, 2.46, 3.39, 5.24, 8.95, 16.37", \
+            "1.35, 1.65, 2.11, 3.04, 4.89, 8.60, 16.02", \
+            "0.65, 0.95, 1.41, 2.34, 4.19, 7.90, 15.32" \
+          );
+        }
+
+        rise_power(power_template_7x7) {
+          index_1 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          index_2 ("0.01, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6");
+          values ( \
+            "2.57, 3.18, 3.97, 5.56, 8.72, 15.05, 27.73", \
+            "2.55, 3.16, 3.95, 5.53, 8.70, 15.03, 27.71", \
+            "2.51, 3.12, 3.91, 5.49, 8.66, 14.99, 27.67", \
+            "2.42, 3.03, 3.82, 5.41, 8.57, 14.90, 27.58", \
+            "2.24, 2.85, 3.64, 5.23, 8.39, 14.72, 27.40", \
+            "1.89, 2.50, 3.29, 4.88, 8.04, 14.37, 27.05", \
+            "1.19, 1.79, 2.58, 4.17, 7.33, 13.66, 26.34" \
+          );
+        }
+      }
+    }
+  }
+
+  /* inv_2 would follow with similar slow corner scaling... */
+
+}

@@ -1,0 +1,300 @@
+# Sakemono 90nm Inverter Cell - LEF Definition
+# 16-track high-density inverter with optimized layout
+
+VERSION 5.8 ;
+DIVIDERCHAR "/" ;
+BUSBITCHARS "[]" ;
+
+UNITS
+    DATABASE MICRONS 1000 ;
+END UNITS
+
+# Inverter cell - Basic building block
+MACRO sakemono90_fd_sc_hd__inv_1
+    CLASS CORE ;
+    ORIGIN 0.000 0.000 ;
+    SIZE 0.34 BY 2.72 ;      # 2 sites wide x 16 tracks high
+    SYMMETRY Y ;             # Can be flipped vertically
+    SITE CoreSite ;          # Uses our defined core site
+
+    # Power pins - Rails at top and bottom
+    PIN VPWR
+        DIRECTION INOUT ;
+        USE POWER ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 2.55 0.34 2.72 ;  # Top power rail (tracks 15-16)
+        END
+    END VPWR
+
+    PIN VGND  
+        DIRECTION INOUT ;
+        USE GROUND ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 0.00 0.34 0.17 ;  # Bottom ground rail (track 1)
+        END
+    END VGND
+
+    # Input pin A
+    PIN A
+        DIRECTION INPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.012 met1 ;
+        ANTENNAPINGATEAREA 0.024 ;
+        PORT
+            LAYER li1 ;
+                RECT 0.05 0.85 0.12 1.87 ;  # Input connection on li1
+            LAYER met1 ;
+                RECT 0.07 1.02 0.15 1.70 ;  # Input metal connection
+        END
+    END A
+
+    # Output pin Y  
+    PIN Y
+        DIRECTION OUTPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.018 met1 ;
+        ANTENNAINOUTDIFFAREA 0.032 ;
+        PORT
+            LAYER li1 ;
+                RECT 0.22 0.85 0.29 1.87 ;  # Output connection on li1
+            LAYER met1 ;
+                RECT 0.19 1.02 0.27 1.70 ;  # Output metal connection
+        END
+    END Y
+
+    # Obstruction areas to prevent routing conflicts
+    OBS
+        LAYER li1 ;
+            # PMOS area obstruction
+            RECT 0.00 1.70 0.34 2.55 ;
+            # NMOS area obstruction  
+            RECT 0.00 0.17 0.34 1.02 ;
+            # Internal routing obstruction
+            RECT 0.12 1.02 0.22 1.70 ;
+    END
+
+    # Define the cell's internal routing tracks
+    # This inverter uses:
+    # Tracks 1: VSS rail
+    # Tracks 2-6: NMOS area 
+    # Tracks 7-10: Signal routing area
+    # Tracks 11-14: PMOS area
+    # Tracks 15-16: VDD rail
+
+END sakemono90_fd_sc_hd__inv_1
+
+# Higher drive strength inverter
+MACRO sakemono90_fd_sc_hd__inv_2
+    CLASS CORE ;
+    ORIGIN 0.000 0.000 ;
+    SIZE 0.51 BY 2.72 ;      # 3 sites wide for higher drive
+    SYMMETRY Y ;
+    SITE CoreSite ;
+
+    # Power pins - Wider for higher current
+    PIN VPWR
+        DIRECTION INOUT ;
+        USE POWER ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 2.55 0.51 2.72 ;  # Top power rail
+        END
+    END VPWR
+
+    PIN VGND
+        DIRECTION INOUT ;
+        USE GROUND ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 0.00 0.51 0.17 ;  # Bottom ground rail
+        END
+    END VGND
+
+    # Input pin A
+    PIN A
+        DIRECTION INPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.018 met1 ;
+        ANTENNAPINGATEAREA 0.048 ;     # Larger gate area
+        PORT
+            LAYER li1 ;
+                RECT 0.05 0.85 0.15 1.87 ;
+            LAYER met1 ;
+                RECT 0.07 1.02 0.18 1.70 ;
+        END
+    END A
+
+    # Output pin Y
+    PIN Y
+        DIRECTION OUTPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.027 met1 ;
+        ANTENNAINOUTDIFFAREA 0.064 ;   # Higher drive = larger diffusion
+        PORT
+            LAYER li1 ;
+                RECT 0.36 0.85 0.46 1.87 ;
+            LAYER met1 ;
+                RECT 0.33 1.02 0.44 1.70 ;
+        END
+    END Y
+
+    # Obstruction areas
+    OBS
+        LAYER li1 ;
+            # PMOS area obstruction
+            RECT 0.00 1.70 0.51 2.55 ;
+            # NMOS area obstruction
+            RECT 0.00 0.17 0.51 1.02 ;
+            # Internal routing obstruction
+            RECT 0.15 1.02 0.36 1.70 ;
+    END
+
+END sakemono90_fd_sc_hd__inv_2
+
+# High drive strength inverter
+MACRO sakemono90_fd_sc_hd__inv_4
+    CLASS CORE ;
+    ORIGIN 0.000 0.000 ;
+    SIZE 0.68 BY 2.72 ;      # 4 sites wide for high drive
+    SYMMETRY Y ;
+    SITE CoreSite ;
+
+    # Power pins
+    PIN VPWR
+        DIRECTION INOUT ;
+        USE POWER ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 2.55 0.68 2.72 ;
+        END
+    END VPWR
+
+    PIN VGND
+        DIRECTION INOUT ;
+        USE GROUND ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 0.00 0.68 0.17 ;
+        END
+    END VGND
+
+    # Input pin A
+    PIN A
+        DIRECTION INPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.024 met1 ;
+        ANTENNAPINGATEAREA 0.096 ;     # Much larger gate
+        PORT
+            LAYER li1 ;
+                RECT 0.05 0.85 0.18 1.87 ;
+            LAYER met1 ;
+                RECT 0.07 1.02 0.21 1.70 ;
+        END
+    END A
+
+    # Output pin Y
+    PIN Y
+        DIRECTION OUTPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.036 met1 ;
+        ANTENNAINOUTDIFFAREA 0.128 ;   # High drive capability
+        PORT
+            LAYER li1 ;
+                RECT 0.50 0.85 0.63 1.87 ;
+            LAYER met1 ;
+                RECT 0.47 1.02 0.60 1.70 ;
+        END
+    END Y
+
+    # Obstruction areas
+    OBS
+        LAYER li1 ;
+            # PMOS area obstruction
+            RECT 0.00 1.70 0.68 2.55 ;
+            # NMOS area obstruction
+            RECT 0.00 0.17 0.68 1.02 ;
+            # Internal routing obstruction
+            RECT 0.18 1.02 0.50 1.70 ;
+    END
+
+END sakemono90_fd_sc_hd__inv_4
+
+# High drive strength inverter
+MACRO sakemono90_fd_sc_hd__inv_8
+    CLASS CORE ;
+    ORIGIN 0.000 0.000 ;
+    SIZE 1.02 BY 2.72 ;      # 6 sites wide for very high drive
+    SYMMETRY Y ;
+    SITE CoreSite ;
+
+    # Power pins
+    PIN VPWR
+        DIRECTION INOUT ;
+        USE POWER ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 2.55 1.02 2.72 ;
+        END
+    END VPWR
+
+    PIN VGND
+        DIRECTION INOUT ;
+        USE GROUND ;
+        SHAPE ABUTMENT ;
+        PORT
+            LAYER met1 ;
+                RECT 0.00 0.00 1.02 0.17 ;
+        END
+    END VGND
+
+    # Input pin A
+    PIN A
+        DIRECTION INPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.032 met1 ;
+        ANTENNAPINGATEAREA 0.192 ;     # Very large gate
+        PORT
+            LAYER li1 ;
+                RECT 0.05 0.85 0.22 1.87 ;
+            LAYER met1 ;
+                RECT 0.07 1.02 0.25 1.70 ;
+        END
+    END A
+
+    # Output pin Y
+    PIN Y
+        DIRECTION OUTPUT ;
+        USE SIGNAL ;
+        ANTENNAPINPARTIALMETALAREA 0.048 met1 ;
+        ANTENNAINOUTDIFFAREA 0.256 ;   # Very high drive capability
+        PORT
+            LAYER li1 ;
+                RECT 0.80 0.85 0.97 1.87 ;
+            LAYER met1 ;
+                RECT 0.77 1.02 0.94 1.70 ;
+        END
+    END Y
+
+    # Obstruction areas
+    OBS
+        LAYER li1 ;
+            # PMOS area obstruction
+            RECT 0.00 1.70 1.02 2.55 ;
+            # NMOS area obstruction
+            RECT 0.00 0.17 1.02 1.02 ;
+            # Internal routing obstruction
+            RECT 0.22 1.02 0.80 1.70 ;
+    END
+
+END sakemono90_fd_sc_hd__inv_8
+
+END LIBRARY

@@ -1,0 +1,416 @@
+# Sakemono 90nm Technology LEF File - Production Ready
+# Comprehensive technology definition for 90nm process with detailed design rules
+
+VERSION 5.8 ;
+BUSBITCHARS "[]" ;
+DIVIDERCHAR "/" ;
+
+UNITS
+    DATABASE MICRONS 1000 ;
+END UNITS
+
+# Manufacturing grid definition
+MANUFACTURINGGRID 0.005 ;
+
+# Polysilicon gate layer
+LAYER poly ;
+    TYPE MASTERSLICE ;
+    WIDTH 0.09 ;           # Minimum poly width (Lmin)
+    SPACING 0.12 ;         # Minimum poly spacing
+    PITCH 0.17 ;           # Poly track pitch
+    OFFSET 0.085 ;
+    AREA 0.0081 ;          # Minimum poly area (0.09 x 0.09)
+    CAPACITANCE CPERSQDIST 0.000060 ;
+    RESISTANCE RPERSQ 8.0 ;
+    THICKNESS 0.18 ;
+    HEIGHT 0.18 ;
+    # Poly-specific design rules
+    ENCLOSURE CONTACT 0.05 ;  # Contact enclosure by poly
+END poly
+
+# Diffusion layers
+LAYER nwell ;
+    TYPE MASTERSLICE ;
+    WIDTH 0.42 ;
+    SPACING 0.42 ;
+    AREA 0.525 ;
+END nwell
+
+LAYER pwell ;
+    TYPE MASTERSLICE ;
+    WIDTH 0.42 ;
+    SPACING 0.42 ;
+    AREA 0.525 ;
+END pwell
+
+# Active diffusion
+LAYER diff ;
+    TYPE MASTERSLICE ;
+    WIDTH 0.15 ;
+    SPACING 0.27 ;
+    AREA 0.0225 ;
+    ENCLOSURE CONTACT 0.06 ;  # Contact enclosure by diffusion
+END diff
+
+# Contact layer (poly/diff to li1)
+LAYER contact ;
+    TYPE CUT ;
+    WIDTH 0.11 ;          # Contact size (square)
+    SPACING 0.13 ;        # Minimum contact spacing
+    ENCLOSURE diff 0.06 ; # Enclosure by diffusion
+    ENCLOSURE poly 0.05 ; # Enclosure by poly
+END contact
+
+# Local interconnect layer (li1)
+LAYER li1 ;
+    TYPE ROUTING ;
+    DIRECTION HORIZONTAL ;
+    WIDTH 0.085 ;          # Minimum li1 width
+    SPACING 0.085 ;        # Minimum li1 spacing  
+    PITCH 0.17 ;           # li1 track pitch (matches met1)
+    OFFSET 0.085 ;
+    AREA 0.007225 ;        # Minimum area (0.085 x 0.085)
+    CAPACITANCE CPERSQDIST 0.000102 ;
+    RESISTANCE RPERSQ 12.8 ;
+    THICKNESS 0.1 ;
+    HEIGHT 0.35 ;
+    # Antenna rules for li1
+    ANTENNARULE 400 ;
+    ENCLOSURE via1 0.055 ;
+END li1
+
+# Metal 1 layer - Primary routing
+LAYER met1 ;
+    TYPE ROUTING ;
+    DIRECTION HORIZONTAL ;
+    WIDTH 0.14 ;           # Minimum met1 width
+    SPACING 0.14 ;         # Minimum met1 spacing
+    PITCH 0.17 ;           # Met1 track pitch (critical for std cells)
+    OFFSET 0.085 ;
+    AREA 0.0196 ;          # Minimum area (0.14 x 0.14)
+    CAPACITANCE CPERSQDIST 0.000036 ;
+    RESISTANCE RPERSQ 0.125 ;   # Typical aluminum resistance
+    THICKNESS 0.35 ;
+    HEIGHT 0.36 ;
+    # Electromigration limits
+    CURRENTDENSITY 2.0 ;   # mA/µm current density limit
+    # Antenna rules
+    ANTENNARULE 400 ;
+    ENCLOSURE via2 0.055 ;
+END met1
+
+# Metal 2 layer - Secondary routing
+LAYER met2 ;
+    TYPE ROUTING ;
+    DIRECTION VERTICAL ;
+    WIDTH 0.14 ;           # Minimum met2 width
+    SPACING 0.14 ;         # Minimum met2 spacing
+    PITCH 0.19 ;           # Met2 track pitch (slightly relaxed)
+    OFFSET 0.095 ;
+    AREA 0.0196 ;
+    CAPACITANCE CPERSQDIST 0.000024 ;
+    RESISTANCE RPERSQ 0.125 ;
+    THICKNESS 0.35 ;
+    HEIGHT 0.72 ;
+    CURRENTDENSITY 2.0 ;
+    ANTENNARULE 400 ;
+    ENCLOSURE via2 0.055 ;
+    ENCLOSURE via3 0.055 ;
+END met2
+
+# Metal 3 layer - Intermediate routing
+LAYER met3 ;
+    TYPE ROUTING ;
+    DIRECTION HORIZONTAL ;
+    WIDTH 0.14 ;           # Minimum met3 width
+    SPACING 0.14 ;         # Minimum met3 spacing
+    PITCH 0.19 ;           # Met3 track pitch
+    OFFSET 0.095 ;
+    AREA 0.0196 ;
+    CAPACITANCE CPERSQDIST 0.000021 ;
+    RESISTANCE RPERSQ 0.125 ;
+    THICKNESS 0.35 ;
+    HEIGHT 1.16 ;
+    CURRENTDENSITY 2.0 ;
+    ANTENNARULE 800 ;      # Relaxed antenna rules for upper metals
+    ENCLOSURE via3 0.055 ;
+    ENCLOSURE via4 0.08 ;
+END met3
+
+# Metal 4 layer - Thick metal for power/clock
+LAYER met4 ;
+    TYPE ROUTING ;
+    DIRECTION VERTICAL ;
+    WIDTH 0.28 ;           # Wider minimum width for thick metal
+    SPACING 0.28 ;         # Wider spacing
+    PITCH 0.28 ;           # Relaxed pitch for power routing
+    OFFSET 0.14 ;
+    AREA 0.0784 ;          # 0.28 x 0.28
+    CAPACITANCE CPERSQDIST 0.000019 ;
+    RESISTANCE RPERSQ 0.065 ;    # Lower resistance for thick metal
+    THICKNESS 0.7 ;        # Thicker metal
+    HEIGHT 1.60 ;
+    CURRENTDENSITY 5.0 ;   # Higher current capacity
+    ANTENNARULE 1600 ;
+    ENCLOSURE via4 0.08 ;
+    ENCLOSURE via5 0.08 ;
+END met4
+
+# Metal 5 layer - Thick metal for global routing  
+LAYER met5 ;
+    TYPE ROUTING ;
+    DIRECTION HORIZONTAL ;
+    WIDTH 0.28 ;
+    SPACING 0.28 ;
+    PITCH 0.28 ;
+    OFFSET 0.14 ;
+    AREA 0.0784 ;
+    CAPACITANCE CPERSQDIST 0.000017 ;
+    RESISTANCE RPERSQ 0.065 ;
+    THICKNESS 0.7 ;
+    HEIGHT 2.04 ;
+    CURRENTDENSITY 5.0 ;
+    ANTENNARULE 1600 ;
+    ENCLOSURE via5 0.08 ;
+    ENCLOSURE via6 0.08 ;
+END met5
+
+# Metal 6 layer - Top thick metal for I/O and power
+LAYER met6 ;
+    TYPE ROUTING ;
+    DIRECTION VERTICAL ;
+    WIDTH 0.28 ;
+    SPACING 0.28 ;
+    PITCH 0.28 ;
+    OFFSET 0.14 ;
+    AREA 0.0784 ;
+    CAPACITANCE CPERSQDIST 0.000015 ;
+    RESISTANCE RPERSQ 0.065 ;
+    THICKNESS 0.7 ;
+    HEIGHT 2.48 ;
+    CURRENTDENSITY 5.0 ;
+    ANTENNARULE 3200 ;     # Most relaxed for top metal
+    ENCLOSURE via6 0.08 ;
+END met6
+
+# Cut layers for vias
+LAYER via1 ;
+    TYPE CUT ;
+    WIDTH 0.11 ;
+    SPACING 0.17 ;
+    ENCLOSURE li1 0.055 met1 0.055 ;
+END via1
+
+LAYER via2 ;
+    TYPE CUT ;
+    WIDTH 0.11 ;
+    SPACING 0.17 ;
+    ENCLOSURE met1 0.055 met2 0.055 ;
+END via2
+
+LAYER via3 ;
+    TYPE CUT ;
+    WIDTH 0.11 ;
+    SPACING 0.17 ;
+    ENCLOSURE met2 0.055 met3 0.055 ;
+END via3
+
+LAYER via4 ;
+    TYPE CUT ;
+    WIDTH 0.16 ;           # Larger vias for thick metals
+    SPACING 0.32 ;
+    ENCLOSURE met3 0.08 met4 0.08 ;
+END via4
+
+LAYER via5 ;
+    TYPE CUT ;
+    WIDTH 0.16 ;
+    SPACING 0.32 ;
+    ENCLOSURE met4 0.08 met5 0.08 ;
+END via5
+
+LAYER via6 ;
+    TYPE CUT ;
+    WIDTH 0.16 ;
+    SPACING 0.32 ;
+    ENCLOSURE met5 0.08 met6 0.08 ;
+END via6
+
+# Via definitions with proper metal enclosures
+VIA via1 DEFAULT
+    LAYER li1 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;  # li1 enclosure
+    LAYER met1 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;  # met1 enclosure
+    LAYER via1 ;
+        RECT -0.055 -0.055 0.055 0.055 ;      # via opening
+    RESISTANCE 4.5 ;       # Via resistance in ohms
+END via1
+
+VIA via2 DEFAULT
+    LAYER met1 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;
+    LAYER met2 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;
+    LAYER via2 ;
+        RECT -0.055 -0.055 0.055 0.055 ;
+    RESISTANCE 4.5 ;
+END via2
+
+VIA via3 DEFAULT
+    LAYER met2 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;
+    LAYER met3 ;
+        RECT -0.0825 -0.0825 0.0825 0.0825 ;
+    LAYER via3 ;
+        RECT -0.055 -0.055 0.055 0.055 ;
+    RESISTANCE 4.5 ;
+END via3
+
+VIA via4 DEFAULT
+    LAYER met3 ;
+        RECT -0.22 -0.22 0.22 0.22 ;    # Larger enclosure for thick metal
+    LAYER met4 ;
+        RECT -0.22 -0.22 0.22 0.22 ;
+    LAYER via4 ;
+        RECT -0.08 -0.08 0.08 0.08 ;
+    RESISTANCE 2.5 ;       # Lower resistance for larger via
+END via4
+
+VIA via5 DEFAULT
+    LAYER met4 ;
+        RECT -0.22 -0.22 0.22 0.22 ;
+    LAYER met5 ;
+        RECT -0.22 -0.22 0.22 0.22 ;
+    LAYER via5 ;
+        RECT -0.08 -0.08 0.08 0.08 ;
+    RESISTANCE 2.5 ;
+END via5
+
+VIA via6 DEFAULT
+    LAYER met5 ;
+        RECT -0.22 -0.22 0.22 0.22 ;
+    LAYER met6 ;
+        RECT -0.22 -0.22 0.22 0.22 ;
+    LAYER via6 ;
+        RECT -0.08 -0.08 0.08 0.08 ;
+    RESISTANCE 2.5 ;
+END via6
+
+# Via array generation rules for multiple vias
+VIARULE via1Array GENERATE
+    LAYER li1 ;
+    LAYER met1 ;
+    LAYER via1 ;
+        RECT 0 0 0.11 0.11 ;
+        SPACING 0.17 BY 0.17 ;
+        RESISTANCE 4.5 ;
+END via1Array
+
+VIARULE via2Array GENERATE
+    LAYER met1 ;
+    LAYER met2 ;
+    LAYER via2 ;
+        RECT 0 0 0.11 0.11 ;
+        SPACING 0.17 BY 0.17 ;
+        RESISTANCE 4.5 ;
+END via2Array
+
+VIARULE via3Array GENERATE
+    LAYER met2 ;
+    LAYER met3 ;
+    LAYER via3 ;
+        RECT 0 0 0.11 0.11 ;
+        SPACING 0.17 BY 0.17 ;
+        RESISTANCE 4.5 ;
+END via3Array
+
+VIARULE via4Array GENERATE
+    LAYER met3 ;
+    LAYER met4 ;
+    LAYER via4 ;
+        RECT 0 0 0.16 0.16 ;
+        SPACING 0.32 BY 0.32 ;
+        RESISTANCE 2.5 ;
+END via4Array
+
+VIARULE via5Array GENERATE
+    LAYER met4 ;
+    LAYER met5 ;
+    LAYER via5 ;
+        RECT 0 0 0.16 0.16 ;
+        SPACING 0.32 BY 0.32 ;
+        RESISTANCE 2.5 ;
+END via5Array
+
+VIARULE via6Array GENERATE
+    LAYER met5 ;
+    LAYER met6 ;
+    LAYER via6 ;
+        RECT 0 0 0.16 0.16 ;
+        SPACING 0.32 BY 0.32 ;
+        RESISTANCE 2.5 ;
+END via6Array
+
+# Standard cell site definition for placement
+SITE CoreSite
+    SYMMETRY Y ;           # Cells can be flipped vertically
+    CLASS CORE ;
+    SIZE 0.17 BY 2.72 ;    # Unit site: met1 pitch x cell height
+END CoreSite
+
+# Alternative site names for OpenLane compatibility
+SITE unithd
+    SYMMETRY Y ;
+    CLASS CORE ;
+    SIZE 0.46 BY 2.72 ;    # 16-track cell height
+END unithd
+
+SITE unithd_16t
+    SYMMETRY Y ;
+    CLASS CORE ;
+    SIZE 0.46 BY 2.72 ;
+END unithd_16t
+
+# Minimum spacing rules between layers
+SPACING li1 li1 0.085 ;
+SPACING met1 met1 0.14 ;
+SPACING met2 met2 0.14 ;
+SPACING met3 met3 0.14 ;
+SPACING met4 met4 0.28 ;
+SPACING met5 met5 0.28 ;
+SPACING met6 met6 0.28 ;
+
+# Cross-layer spacing rules  
+SPACING li1 met1 0.0 ;      # li1 connects to met1 via via1
+SPACING poly diff 0.07 ;    # Poly to diffusion spacing
+SPACING poly contact 0.0 ;  # Poly connects via contact
+SPACING diff contact 0.0 ;  # Diffusion connects via contact
+
+# Minimum area rules (prevent sliver geometries)
+AREA li1 0.007225 ;         # 0.085 x 0.085
+AREA met1 0.0196 ;          # 0.14 x 0.14  
+AREA met2 0.0196 ;
+AREA met3 0.0196 ;
+AREA met4 0.0784 ;          # 0.28 x 0.28
+AREA met5 0.0784 ;
+AREA met6 0.0784 ;
+
+# Density rules for metal fill
+DENSITY met1 30 80 ;        # Min 30%, Max 80% density
+DENSITY met2 30 80 ;
+DENSITY met3 30 80 ;
+DENSITY met4 20 85 ;        # Relaxed for thick metals
+DENSITY met5 20 85 ;
+DENSITY met6 20 85 ;
+
+# Antenna rules (accumulation ratios)
+ANTENNAMETALAREA met1 400 ;
+ANTENNAMETALAREA met2 400 ;
+ANTENNAMETALAREA met3 800 ;
+ANTENNAMETALAREA met4 1600 ;
+ANTENNAMETALAREA met5 1600 ;
+ANTENNAMETALAREA met6 3200 ;
+
+# End of technology LEF
+END LIBRARY

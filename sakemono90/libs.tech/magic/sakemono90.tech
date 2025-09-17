@@ -1,0 +1,371 @@
+# Sakemono 90nm Technology File for Magic VLSI Layout
+# Generated for OpenLane flow compatibility
+# Process: 90nm CMOS with 6-metal layers
+# Cell height: 2.72µm (16-track architecture)
+
+tech
+    format 34
+    sakemono90
+end
+
+version
+    version 1.0
+    description "Sakemono 90nm CMOS Technology"
+end
+
+planes
+    well,w
+    active,a
+    metal1,m1
+    metal2,m2  
+    metal3,m3
+    metal4,m4
+    metal5,m5
+    metal6,m6
+end
+
+types
+    well        nwell,pwell
+    active      ndiff,pdiff,poly,nsd,psd
+    metal1      m1
+    metal2      m2
+    metal3      m3
+    metal4      m4
+    metal5      m5
+    metal6      m6
+end
+
+# Contact types for layer connections
+contact
+    pc      poly        metal1
+    ndc     ndiff       metal1  
+    pdc     pdiff       metal1
+    via     metal1      metal2
+    via2    metal2      metal3
+    via3    metal3      metal4
+    via4    metal4      metal5
+    via5    metal5      metal6
+end
+
+# Layer styles for drawing
+styles
+    styletype mos
+    
+    nwell       1
+    pwell       17
+    
+    ndiff       2
+    pdiff       18
+    poly        3
+    nsd         4   # N+ source/drain
+    psd         20  # P+ source/drain
+    
+    pc          19  # Poly contact
+    ndc         5   # N-diffusion contact  
+    pdc         21  # P-diffusion contact
+    
+    metal1      6
+    via         7
+    metal2      8
+    via2        9
+    metal3      10
+    via3        11
+    metal4      12
+    via4        13
+    metal5      14
+    via5        15
+    metal6      16
+    
+    # Error layers
+    error_p     33
+    error_s     34
+    error_ps    35
+end
+
+# Composition rules - how layers interact
+compose
+    # Transistor formation
+    compose nfet ndiff poly
+    compose pfet pdiff poly
+    
+    # Contact formation  
+    compose pc poly metal1
+    compose ndc ndiff metal1 nsd
+    compose pdc pdiff metal1 psd
+    
+    # Via stack formation
+    compose via metal1 metal2
+    compose via2 metal2 metal3
+    compose via3 metal3 metal4
+    compose via4 metal4 metal5
+    compose via5 metal5 metal6
+end
+
+# Connect statements - electrical connectivity
+connect
+    # Well connections
+    nwell,pwell
+    
+    # Diffusion and poly
+    ndiff,nsd
+    pdiff,psd
+    poly,pc/m1
+    
+    # Metal stack connectivity  
+    ndc/a,ndc/m1,metal1,pc/m1,pdc/m1
+    via/m1,via/m2,metal2
+    via2/m2,via2/m3,metal3
+    via3/m3,via3/m4,metal4
+    via4/m4,via4/m5,metal5
+    via5/m5,via5/m6,metal6
+end
+
+# Design rules for 90nm process
+drc
+    # Minimum widths (nanometers)
+    width poly 90
+    width ndiff 120
+    width pdiff 120  
+    width metal1 140
+    width metal2 140
+    width metal3 300
+    width metal4 300
+    width metal5 800
+    width metal6 800
+    
+    # Minimum spacings
+    spacing poly poly 130
+    spacing ndiff ndiff 140
+    spacing pdiff pdiff 140
+    spacing ndiff pdiff 140
+    spacing metal1 metal1 140
+    spacing metal2 metal2 140
+    spacing metal3 metal3 300
+    spacing metal4 metal4 300
+    spacing metal5 metal5 800
+    spacing metal6 metal6 800
+    
+    # Contact sizes and spacings
+    exact_size pc 130 130
+    exact_size ndc 130 130
+    exact_size pdc 130 130
+    exact_size via 130 130
+    exact_size via2 200 200
+    exact_size via3 200 200
+    exact_size via4 320 320
+    exact_size via5 320 320
+    
+    spacing pc pc 190
+    spacing ndc ndc 190
+    spacing pdc pdc 190
+    spacing via via 170
+    spacing via2 via2 200
+    spacing via3 via3 200
+    spacing via4 via4 320
+    spacing via5 via5 320
+    
+    # Enclosure rules (minimum overlap)
+    surround pc/a poly 55
+    surround pc/m1 metal1 55
+    surround ndc/a ndiff 60
+    surround ndc/m1 metal1 55
+    surround pdc/a pdiff 60
+    surround pdc/m1 metal1 55
+    
+    surround via/m1 metal1 55
+    surround via/m2 metal2 55
+    surround via2/m2 metal2 65
+    surround via2/m3 metal3 65
+    surround via3/m3 metal3 65
+    surround via3/m4 metal4 65
+    surround via4/m4 metal4 190
+    surround via4/m5 metal5 190
+    surround via5/m5 metal5 190
+    surround via5/m6 metal6 190
+    
+    # Well rules
+    spacing nwell pwell 400
+    width nwell 840
+    width pwell 840
+    
+    # Poly-to-diffusion spacing (outside gate)
+    spacing poly ndiff 50
+    spacing poly pdiff 50
+    
+    # Metal density rules for CMP
+    density metal1 30 80
+    density metal2 30 80
+    density metal3 30 80
+    density metal4 30 80
+    density metal5 30 80
+    density metal6 30 80
+    
+    # Antenna rules
+    antenna metal1 400
+    antenna metal2 400
+    antenna metal3 400
+    antenna metal4 400
+    antenna metal5 400
+    antenna metal6 400
+end
+
+# Device extraction for LVS
+extract
+    # NMOS transistor
+    fet nfet 100 100 ndiff,nsd poly nwell
+    device mosfet nfet pdiff,nsd pdiff,nsd 2 pfet
+    
+    # PMOS transistor  
+    fet pfet 100 100 pdiff,psd poly pwell
+    device mosfet pfet ndiff,nsd ndiff,nsd 2 nfet
+    
+    # Resistors
+    resistor poly 1000 poly
+    resistor ndiff 50 ndiff,nsd
+    resistor pdiff 50 pdiff,psd
+    
+    # Capacitors
+    capacitor poly pdiff 100
+    capacitor metal1 metal2 50
+    capacitor metal2 metal3 50
+    capacitor metal3 metal4 50
+    capacitor metal4 metal5 50
+    capacitor metal5 metal6 50
+end
+
+# Layer aliases for GDS import/export
+gds
+    # GDS layer numbers for stream format
+    nwell       1
+    ndiff       2  
+    poly        3
+    nsd         4
+    metal1      6
+    via         7
+    metal2      8
+    via2        9
+    metal3      10
+    via3        11
+    metal4      12
+    via4        13
+    metal5      14
+    via5        15
+    metal6      16
+    pwell       17
+    pdiff       18
+    pc          19
+    psd         20
+    pdc         21
+end
+
+# CIF output rules for mask generation
+cifoutput
+    style lambda=50
+    scalefactor 50
+    
+    layer CWN nwell
+        labels nwell
+    end
+    
+    layer CAA ndiff,pdiff
+        labels ndiff,pdiff  
+    end
+    
+    layer CPG poly
+        labels poly
+    end
+    
+    layer CM1 metal1
+        labels metal1
+    end
+    
+    layer CV1 via
+    end
+    
+    layer CM2 metal2
+        labels metal2
+    end
+    
+    layer CV2 via2
+    end
+    
+    layer CM3 metal3
+        labels metal3
+    end
+    
+    layer CV3 via3
+    end
+    
+    layer CM4 metal4
+        labels metal4
+    end
+    
+    layer CV4 via4
+    end
+    
+    layer CM5 metal5
+        labels metal5
+    end
+    
+    layer CV5 via5
+    end
+    
+    layer CM6 metal6
+        labels metal6
+    end
+end
+
+# Standard cell routing grids
+grid
+    # 16-track cell with 2.72µm height
+    track metal1 vert 0.17 170
+    track metal2 horiz 0.23 230
+    track metal3 vert 0.34 340  
+    track metal4 horiz 0.34 340
+    track metal5 vert 0.80 800
+    track metal6 horiz 0.80 800
+end
+
+# Magic layout preferences  
+wiring
+    contact pc 3 poly metal1
+    contact ndc 3 ndiff metal1
+    contact pdc 3 pdiff metal1
+    contact via 3 metal1 metal2
+    contact via2 3 metal2 metal3
+    contact via3 3 metal3 metal4
+    contact via4 3 metal4 metal5
+    contact via5 3 metal5 metal6
+end
+
+mzrouter
+    style irouter
+    layer metal1 140 140 140
+    layer metal2 140 140 140  
+    layer metal3 300 300 300
+    layer metal4 300 300 300
+    layer metal5 800 800 800
+    layer metal6 800 800 800
+    
+    contact via metal1 metal2 170
+    contact via2 metal2 metal3 200
+    contact via3 metal3 metal4 200
+    contact via4 metal4 metal5 320
+    contact via5 metal5 metal6 320
+end
+
+# Standard routing preferences
+router
+    layer1 metal1 140 140 vert
+    layer2 metal2 140 140 horiz
+    layer3 metal3 300 300 vert
+    layer4 metal4 300 300 horiz
+    layer5 metal5 800 800 vert 
+    layer6 metal6 800 800 horiz
+    
+    via12 via 170
+    via23 via2 200
+    via34 via3 200
+    via45 via4 320
+    via56 via5 320
+end

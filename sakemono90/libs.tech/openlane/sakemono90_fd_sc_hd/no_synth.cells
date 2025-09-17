@@ -1,0 +1,46 @@
+# Cells to exclude from synthesis
+# These cells should not be used by the synthesis tool
+
+# Test and characterization cells
+sakemono90_fd_sc_hd__probe_p_8
+
+# Low power flow cells (special purpose)
+sakemono90_fd_sc_hd__lpflow_bleeder_1
+sakemono90_fd_sc_hd__lpflow_clkbufkapwr_1
+sakemono90_fd_sc_hd__lpflow_clkbufkapwr_2
+sakemono90_fd_sc_hd__lpflow_clkbufkapwr_4
+sakemono90_fd_sc_hd__lpflow_clkbufkapwr_8
+sakemono90_fd_sc_hd__lpflow_clkbufkapwr_16
+sakemono90_fd_sc_hd__lpflow_clkinvkapwr_1
+sakemono90_fd_sc_hd__lpflow_clkinvkapwr_2
+sakemono90_fd_sc_hd__lpflow_clkinvkapwr_4
+sakemono90_fd_sc_hd__lpflow_clkinvkapwr_8
+sakemono90_fd_sc_hd__lpflow_clkinvkapwr_16
+sakemono90_fd_sc_hd__lpflow_inputiso0n_1
+sakemono90_fd_sc_hd__lpflow_inputiso0p_1
+sakemono90_fd_sc_hd__lpflow_inputiso1n_1
+sakemono90_fd_sc_hd__lpflow_inputiso1p_1
+sakemono90_fd_sc_hd__lpflow_inputisolatch_1
+sakemono90_fd_sc_hd__lpflow_lsbuf_lh_hl_dn_1
+sakemono90_fd_sc_hd__lpflow_lsbuf_lh_isowell_4
+sakemono90_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_1
+sakemono90_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_2
+sakemono90_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_4
+
+# Physical-only cells (no logical function)
+sakemono90_fd_sc_hd__fill_1
+sakemono90_fd_sc_hd__fill_2
+sakemono90_fd_sc_hd__fill_4
+sakemono90_fd_sc_hd__fill_8
+sakemono90_fd_sc_hd__decap_3
+sakemono90_fd_sc_hd__decap_4
+sakemono90_fd_sc_hd__decap_6
+sakemono90_fd_sc_hd__decap_8
+sakemono90_fd_sc_hd__decap_12
+sakemono90_fd_sc_hd__tapvpwrvgnd_1
+
+# Antenna diodes (added during PnR, not for synthesis)
+sakemono90_fd_sc_hd__diode_2
+
+# Broken or non-functional cells (placeholder)
+# Add any cells that are known to be problematic for synthesis

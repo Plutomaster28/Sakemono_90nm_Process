@@ -1,0 +1,25 @@
+# TODO: Standard Cell LEF files need to be created
+# This directory should contain the LEF (Library Exchange Format) files
+# for each standard cell in the library.
+#
+# Example files that should be here:
+# - sakemono90_fd_sc_hd__inv_1.lef
+# - sakemono90_fd_sc_hd__inv_2.lef
+# - sakemono90_fd_sc_hd__nand2_1.lef
+# - sakemono90_fd_sc_hd__nor2_1.lef
+# - sakemono90_fd_sc_hd__dff_1.lef
+# - ... (hundreds more)
+#
+# These files define the physical dimensions, pin locations, and
+# metal routing for each standard cell.
+#
+# LEF files can be generated from:
+# 1. GDS layout files using tools like Cadence Abstract
+# 2. Manual creation following LEF format specification
+# 3. Conversion from other PDK formats
+#
+# Each LEF file should contain:
+# - Cell boundary definition
+# - Pin definitions with metal layers
+# - Obstruction definitions
+# - Symmetry information

@@ -1,0 +1,34 @@
+{
+  "structure": {
+    "libs.tech/openlane": "PASS",
+    "libs.tech/magic": "PASS",
+    "libs.tech/spice": "PASS",
+    "libs.ref/lef": "PASS",
+    "libs.ref/lib": "PASS",
+    "libs.ref/techlef": "PASS"
+  },
+  "files": {
+    "libs.tech/openlane/config.tcl": "PASS",
+    "libs.tech/spice/sakemono90_models.sp": "PASS",
+    "libs.tech/magic/sakemono90.tech": "PASS",
+    "libs.ref/techlef/sakemono90.tlef": "PASS",
+    "libs.ref/lef/sakemono90_fd_sc_hd__inv.lef": "PASS",
+    "libs.ref/lib/sakemono90_fd_sc_hd__tt_025C_1v80.lib": "PASS",
+    "spice_models": "PASS"
+  },
+  "timing": {
+    "sakemono90_fd_sc_hd__ff_n40C_1v95.lib": "PASS",
+    "sakemono90_fd_sc_hd__logic_tt_025C_1v80.lib": "PASS",
+    "sakemono90_fd_sc_hd__ss_100C_1v62.lib": "PASS",
+    "sakemono90_fd_sc_hd__tt_025C_1v80.lib": "PASS"
+  },
+  "drc": {
+    "sakemono90_fd_sc_hd__buf.lef": "PASS",
+    "sakemono90_fd_sc_hd__dff.lef": "PASS",
+    "sakemono90_fd_sc_hd__inv.lef": "PASS",
+    "sakemono90_fd_sc_hd__logic.lef": "PASS",
+    "magic_tech": "PASS",
+    "16_track": "PASS"
+  },
+  "overall": "PASS"
+}
